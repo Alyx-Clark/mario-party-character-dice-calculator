@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    th {
+    font-weight: 500;
+    font-size: 15px;
+    padding: 2px 10px;
+    }
+    .table-body tr:nth-child(2n + 1){
+        background-color: #fdc6c6;
+    }
+    .table-body tr:nth-child(2n){
+        background-color: #c6e3fd;
+    }
+    .table-header th{
+        font-size:16px;
+        font-weight: 600;
+    }
+</style>
+
+    <body>
+        <div id="app">
+            This will be replaced
+        </div>
+    </body>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        numberOfRolls: 0,
+        characters : [
+    { name: "Normal 6-sided die", diceBlock: [1, 2, 3, 4, 5, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Mario", diceBlock: [1, 3, 3, 3, 5, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Peach", diceBlock: [0, 2, 4, 4, 4, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Daisy", diceBlock: [3, 3, 3, 3, 4, 4], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Wario", diceBlock: [-200, -200, 6, 6, 6, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Waluigi", diceBlock: [-300, 1, 3, 5, 5, 7], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Yoshi", diceBlock: [0, 1, 3, 5, 5, 7], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Rosalina", diceBlock: [200, 200, 2, 3, 4, 8], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "DonkeyKong", diceBlock: [500, 0, 0, 0, 10, 10], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "DiddyKong", diceBlock: [200, 0, 0, 7, 7, 7], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Goomba", diceBlock: [200, 200, 3, 4, 5, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "ShyGuy", diceBlock: [0, 4, 4, 4, 4, 4], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "KoopaTroopa", diceBlock: [1, 1, 2, 3, 3, 10], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "MontyMole", diceBlock: [100, 2, 3, 4, 5, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Bowser", diceBlock: [-300, -300, 1, 8, 9, 10], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "BowserJr", diceBlock: [1, 1, 1, 4, 4, 9], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Boo", diceBlock: [-200, -200, 5, 5, 7, 7], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "HammerBro", diceBlock: [300, 1, 1, 1, 5, 5], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "DryBones", diceBlock: [1, 1, 1, 6, 6, 6], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "PomPom", diceBlock: [0, 3, 3, 3, 3, 8], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+    { name: "Luigi", diceBlock: [1, 1, 1, 5, 6, 7], coins: 0, movementAverage: 0, movementRunningAverage: 0, movementAverageTotal: 0 },
+],
+
+      }
+    },
+    methods: {
+        diceBlockAverage(characters){
+            characters.forEach(character => {
+                let i = 0;
+                let movementTotal = 0;
+                let coinTotal = 0;
+                while(i < 100000){
+                    let randomNumber = Math.floor(Math.random() * 6);
+                    let roll = character.diceBlock[randomNumber];
+                    let isCoin = roll % 100 === 0 ? true : false;
+                    if(isCoin){
+                        coinTotal += roll/100; // Coins made mutiples of 100 to distinguish between movement numbers
+                    }else{
+                        movementTotal += roll;
+                    };
+                    i++;
+                };
+                character.movementAverage = movementTotal/100000;
+                // What is movement running average? Its the total of all previous averages divided by the number of rolls
+                character.movementAverageTotal = character.movementAverageTotal + character.movementAverage;
+                character.movementRunningAverage = parseFloat((character.movementAverageTotal/this.numberOfRolls).toFixed(5));
+                character.coins = coinTotal;
+            });
+            characters.sort((a,b) => b.movementRunningAverage - a.movementRunningAverage);
+            return characters;
+        },
+        rollDice(){
+            this.numberOfRolls++;
+            this.diceBlockAverage(this.characters);
+        },
+    },
+    template: `
+        <div>
+            <h1>Super Mario Party Character Die Averages</h1>
+            <button @click="rollDice">Roll Dice</button>
+            <br>
+            <br>
+            <table>
+                <tr style="font-size:12px;">*for every "Roll Dice", the die is rolled 100,000 times</tr>
+                <tr style="font-size:12px;">*characters are sorted by running movement average</tr>
+                <tr style="font-size:12px;">Number of rolls: {{ this.numberOfRolls }}</tr>
+                <div class="table-body">
+                    <tr class="table-header">
+                    <th>Name</th>
+                    <th>Average Movement Roll For Current Set of Rolls</th>
+                    <th>Movement Running Average</th>
+                    <th>Total Coins For Current Set of Rolls</th>
+                </tr>
+                <tr v-for="character in characters" :key="character.name">
+                    <th>{{ character.name }}</th>
+                    <th>{{ character.movementAverage }}</th>
+                    <th>{{ character.movementRunningAverage }}</th>
+                    <th>{{ character.coins }}</th>
+                </tr>
+                </div>
+            </table>
+        </div>
+    `,
+
+  }).mount('#app')
+</script>
+</html>
