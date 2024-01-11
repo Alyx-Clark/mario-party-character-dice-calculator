@@ -117,10 +117,10 @@
                         rollCounts[roll] += 1;
                     i++;
                 };
-                character.movementAverage = movementTotal/this.loopNumber;
+                character.movementAverage = (movementTotal/this.loopNumber).toFixed(3);
                 // What is movement running average? Its the total of all previous averages divided by the number of rolls
-                character.movementAverageTotal = character.movementAverageTotal + character.movementAverage;
-                character.movementRunningAverage = parseFloat((character.movementAverageTotal/this.numberOfRolls).toFixed(5));
+                character.movementAverageTotal = character.movementAverageTotal + parseFloat(character.movementAverage);
+                character.movementRunningAverage = parseFloat((character.movementAverageTotal/this.numberOfRolls).toFixed(3));
                 character.coins = coinTotal;
                 // Find the most rolled number
                 let maxRoll = Object.keys(rollCounts).reduce((a, b) => rollCounts[a] > rollCounts[b] ? a : b);
