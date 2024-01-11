@@ -120,7 +120,7 @@
                 character.movementAverage = (movementTotal/this.loopNumber).toFixed(3);
                 // What is movement running average? Its the total of all previous averages divided by the number of rolls
                 character.movementAverageTotal = character.movementAverageTotal + parseFloat(character.movementAverage);
-                character.movementRunningAverage = parseFloat((character.movementAverageTotal/this.numberOfRolls).toFixed(3));
+                character.movementRunningAverage = (character.movementAverageTotal/this.numberOfRolls).toFixed(3);
                 character.coins = coinTotal;
                 // Find the most rolled number
                 let maxRoll = Object.keys(rollCounts).reduce((a, b) => rollCounts[a] > rollCounts[b] ? a : b);
@@ -151,7 +151,7 @@
             <table>
                 <tr style="font-size:12px;"><a href="https://github.com/Alyx-Clark/mario-party-character-dice-calculator">Github Repo</a></tr>
                 <tr style="font-size:12px;">*for every "Roll Die" click, the die is rolled {{ this.loopNumber }} times</tr>
-                <tr style="font-size:12px;">*characters are sorted by running movement average</tr>
+                <tr style="font-size:12px;">*characters are sorted by weighted average</tr>
                 <tr style="font-size:12px;">*average spaces moved are calculated along side total coins, so a character with 4 spaces moved and 5 coins is better than a character with 4 spaces moved and 0 coins</tr>
                 <tr style="font-size:14px; margin:5px;">Number of times rolled: {{ this.numberOfRolls }}</tr>
                 <div class="table-body">
